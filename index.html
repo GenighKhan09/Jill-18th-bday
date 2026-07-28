@@ -567,22 +567,30 @@
 
 <footer>
   <span class="script">for Jill, from Vianna</span>
-  
-</footer>
-
-<script>
+  <script>
   const revealEls = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting){
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  revealEls.forEach(el => io.observe(el));
+
+  const showAll = () => {
+    revealEls.forEach(el => el.classList.add('in'));
+  };
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05 });
+
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    showAll();
+  }
+
+  // fallback for mobile browsers
+  window.addEventListener('load', showAll);
+  window.addEventListener('resize', showAll);
 </script>
-
-</body>
-</html>
-
+</footer>
